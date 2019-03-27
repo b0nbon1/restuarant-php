@@ -15,7 +15,12 @@ class CreateCartsTable extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->text('description')->nullable();
             $table->timestamps();
+
+            $table->integer('food_id')->unsigned();
+            $table->foreign('food_id')->references('id')->on('foods')->onDelete('cascade');
+
         });
     }
 
