@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Food;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class FoodController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::all();
+        $food = Food::all();
 
-        return response()->json([$category],200);
+        return response()->json([$food],200);
     }
 
     /**
@@ -39,73 +39,81 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:50',
-            'description' => 'required|max:200'
+            'description' => 'nullable|max:200',
+            'price'=> 'required|numeric',
+            'discount'=>'nullable|numeric',
+            'available'=> 'nullable',
+            'category_id'=>'nullable|exists:food_categories,id'
         ]);
 
-        $category = Category::create($request->all());
+        $food = Food::create($request->all());
 
         return response()->json([
-            'message' => 'Category Created Successful',
-            'Category' => $category
+            'message' => 'Food Created Successful',
+            'food' => $food
         ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Food  $food
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Food $food)
     {
-        return $category;
+        return $food;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Food  $food
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Food $food)
     {
-        
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
+     * @param  \App\Food  $food
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Food $food)
     {
         $request->validate([
-            'name'       => 'nullable|min:3|max:50',
-            'description' => 'nullable|max:200'
-         ]);
- 
-         $category->update($request->all());
+            'name' => 'nullable|min:3|max:50',
+            'description' => 'nullable|max:200',
+            'price'=> 'nullable|numeric',
+            'discount'=>'nullable|numeric',
+            'available'=> 'nullable',
+            'category_id'=>'nullable|exists:food_categories,id'
+        ]);
+
+        $food->update($request->all());
  
          return response()->json([
-             'message' => 'Great success! Category updated',
-             'task' => $category
-         ]);
+             'message' => 'food updated',
+             'task' => $food
+         ],201);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Food  $food
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Food $food)
     {
-        $category->delete();
+        $food->delete();
 
         return response()->json([
-            'message' => 'Successfully deleted Category!'
+            'message' => 'Successfully deleted food!'
         ]);
     }
 }

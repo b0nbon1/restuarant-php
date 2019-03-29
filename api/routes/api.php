@@ -30,11 +30,10 @@ Route::group([
 
 
 Route::resource('category', 'CategoryController')->except(["create","index", "edit"]);
-
-
-
 Route::get('category', 'CategoryController@index');
 
+Route::resource('food', 'FoodController')->except(["create","index", "edit"]);
+Route::get('food', 'FoodController@index');
 
 
 Route::group([    
