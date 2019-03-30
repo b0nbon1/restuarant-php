@@ -38,8 +38,13 @@ Route::get('food', 'FoodController@index')->name('food.index');
 Route::resource('order', 'OrderController')->except(["create","index", "edit"]);
 Route::get('order', 'OrderController@index')->name('order.index');
 
-Route::resource('review', 'ReviewsController')->except(["create","index", "edit"]);
-Route::get('review', 'ReviewsController@index')->name('review.index');
+Route::group(['prefix'=> 'food'],
+    function (){
+        Route::resource('/{food}/review', 'ReviewsController')->except(["create","index", "edit"]);
+        Route::get('/{food}/review', 'ReviewsController@index')->name('review.index');
+    }
+);
+
 
 
 Route::group([    
