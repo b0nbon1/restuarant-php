@@ -19,8 +19,10 @@ class CategoryCollection extends ResourceCollection
                  'id' => $data->id,
                  'name' => $data->name,
                  'description' => $data->description,
-                 'link' => route('food.index',$data->id)
-                ]; }),];
+                 'link' => route('category.show',$data->id),
+                ]; }),
+                'meta' => ['category_count' => $this->collection->count()],
+            ];
     }
    
 }
