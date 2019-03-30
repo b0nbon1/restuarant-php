@@ -38,6 +38,9 @@ Route::get('food', 'FoodController@index');
 Route::resource('order', 'OrderController')->except(["create","index", "edit"]);
 Route::get('order', 'OrderController@index');
 
+Route::resource('review', 'ReviewsController')->except(["create","index", "edit"]);
+Route::get('review', 'ReviewsController@index');
+
 
 Route::group([    
     'namespace' => 'Auth',    
