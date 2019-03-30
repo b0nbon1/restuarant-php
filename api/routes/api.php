@@ -30,16 +30,16 @@ Route::group([
 
 
 Route::resource('category', 'CategoryController')->except(["create","index", "edit"]);
-Route::get('category', 'CategoryController@index');
+Route::get('category', 'CategoryController@index')->name('category.index');
 
 Route::resource('food', 'FoodController')->except(["create","index", "edit"]);
 Route::get('food', 'FoodController@index')->name('food.index');
 
 Route::resource('order', 'OrderController')->except(["create","index", "edit"]);
-Route::get('order', 'OrderController@index');
+Route::get('order', 'OrderController@index')->name('order.index');
 
 Route::resource('review', 'ReviewsController')->except(["create","index", "edit"]);
-Route::get('review', 'ReviewsController@index');
+Route::get('review', 'ReviewsController@index')->name('review.index');
 
 
 Route::group([    
