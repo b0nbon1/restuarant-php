@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Food;
+use App\Order;
 use Illuminate\Http\Request;
 
-class FoodController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $food = Food::all();
+        $order = Order::all();
 
-        return response()->json([$food],200);
+        return response()->json([$order],200);
     }
 
     /**
@@ -38,40 +38,37 @@ class FoodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|min:3|max:50',
-            'description' => 'nullable|max:200',
-            'price'=> 'required|numeric',
-            'discount'=>'nullable|numeric',
-            'available'=> 'nullable',
-            'category_id'=>'nullable|exists:categories,id'
+            'quantity' => 'required|numeric',
+            'food_id'=>'required|exists:foods,id',
+            'user_id'=>'nullable|exists:users,id'
         ]);
 
-        $food = Food::create($request->all());
+        $order = Order::create($request->all());
 
         return response()->json([
-            'message' => 'Food Created Successful',
-            'food' => $food
+            'message' => 'Order Created Successful',
+            'food' => $order
         ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Food  $food
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Food $food)
+    public function show(Order $order)
     {
-        return $food;
+        return $order;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Food  $food
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Food $food)
+    public function edit(Order $order)
     {
         //
     }
@@ -80,40 +77,37 @@ class FoodController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Food  $food
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Food $food)
+    public function update(Request $request, Order $order)
     {
         $request->validate([
-            'name' => 'nullable|min:3|max:50',
-            'description' => 'nullable|max:200',
-            'price'=> 'nullable|numeric',
-            'discount'=>'nullable|numeric',
-            'available'=> 'nullable',
-            'category_id'=>'nullable|exists:food_categories,id'
+            'quantity' => 'nullable|numeric',
+            'food_id'=>'nullable|exists:foods,id',
+            'user_id'=>'nullable|exists:users,id'
         ]);
 
-        $food->update($request->all());
+        $order->update($request->all());
  
          return response()->json([
-             'message' => 'food updated',
-             'task' => $food
+             'message' => 'order updated',
+             'task' => $order
          ],201);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Food  $food
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Food $food)
+    public function destroy(Order $order)
     {
-        $food->delete();
+        $order->delete();
 
         return response()->json([
-            'message' => 'Successfully deleted food!'
+            'message' => 'Successfully deleted order!'
         ]);
     }
 }
