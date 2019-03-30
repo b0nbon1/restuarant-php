@@ -43,7 +43,7 @@ class FoodController extends Controller
             'price'=> 'required|numeric',
             'discount'=>'nullable|numeric',
             'available'=> 'nullable',
-            'category_id'=>'nullable|exists:food_categories,id'
+            'category_id'=>'nullable|exists:categories,id'
         ]);
 
         $food = Food::create($request->all());
