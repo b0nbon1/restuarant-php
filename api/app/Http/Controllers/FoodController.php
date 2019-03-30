@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+use App\Http\Resources\food\FoodCollection;
+use App\Http\Resources\food\FoodResource;
 use Illuminate\Http\Request;
 
 class FoodController extends Controller
