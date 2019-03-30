@@ -16,9 +16,7 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $food = Food::all();
-
-        return response()->json([$food],200);
+        return new FoodCollection(Food::all());
     }
 
     /**
@@ -64,7 +62,7 @@ class FoodController extends Controller
      */
     public function show(Food $food)
     {
-        return $food;
+        return new FoodResource($food);
     }
 
     /**
