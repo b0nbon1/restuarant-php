@@ -47,7 +47,7 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order Created Successful',
-            'food' => $order
+            'order' => $order
         ], 201);
     }
 
@@ -59,7 +59,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return $order;
+        return response()->json([$order],200);
     }
 
     /**
@@ -92,7 +92,7 @@ class OrderController extends Controller
  
          return response()->json([
              'message' => 'order updated',
-             'task' => $order
+             'Order' => $order
          ],201);
     }
 
@@ -108,6 +108,6 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Successfully deleted order!'
-        ]);
+        ],200);
     }
 }
