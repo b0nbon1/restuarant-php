@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
+use App\Reviews;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class ReviewsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $order = Order::all();
+        $review = Reviews::all();
 
-        return response()->json([$order],200);
+        return response()->json([$review],200);
     }
 
     /**
@@ -38,37 +38,38 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'quantity' => 'required|numeric',
-            'food_id'=>'required|exists:foods,id',
-            'user_id'=>'nullable|exists:users,id'
+            "star"=> "numeric|min:1|max:5",
+            "review" => "nullable|min:3|max:50",
+            "user_id" => "required|exists:users,id",
+            "food_id" => "required|exists:foods,id"
         ]);
 
-        $order = Order::create($request->all());
+        $review = Reviews::create($request->all());
 
         return response()->json([
-            'message' => 'Order Created Successful',
-            'order' => $order
+            'message' => 'Review Created Successful',
+            'review' => $review
         ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Order  $order
+     * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(Reviews $reviews)
     {
-        return response()->json([$order],200);
+        return $reviews;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Order  $order
+     * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit(Reviews $reviews)
     {
         //
     }
@@ -77,37 +78,38 @@ class OrderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Order  $order
+     * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Reviews $reviews)
     {
         $request->validate([
-            'quantity' => 'nullable|numeric',
-            'food_id'=>'nullable|exists:foods,id',
-            'user_id'=>'nullable|exists:users,id'
+            "star"=> "numeric|min:1|max:5",
+            "review" => "nullable|min:3|max:50",
+            "user_id" => "required|exists:users,id",
+            "food_id" => "required|exists:foods,id"
         ]);
 
         $order->update($request->all());
  
-         return response()->json([
-             'message' => 'order updated',
-             'Order' => $order
-         ],201);
+        return response()->json([
+            'message' => 'review updated Successful',
+            'review' => $review
+        ], 201);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Order  $order
+     * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(Reviews $reviews)
     {
         $order->delete();
 
         return response()->json([
-            'message' => 'Successfully deleted order!'
+            'message' => 'Successfully deleted review!'
         ],200);
     }
 }
