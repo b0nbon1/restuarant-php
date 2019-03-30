@@ -14,6 +14,14 @@ class ReviewCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return ['data'=>$this->collection->transform(function ($data) 
+             {return[ 
+                 'id' => $data->id,
+                 'name' => $data->name,
+                 'description' => $data->description,
+                 'link' => route('category.show',$data->id),
+                ]; }),
+                'meta' => ['category_count' => $this->collection->count()],
+            ];
     }
 }
