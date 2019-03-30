@@ -17,7 +17,9 @@ class CategoryResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'description'=>$this->description
+            'description'=>$this->description,
+            'foods'=>$this->getFoods($this->id),
+            // 'link' => route('food.show',$data->id),
         ];
     }
 }
