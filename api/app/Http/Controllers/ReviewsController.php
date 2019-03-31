@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Reviews;
+use App\Food;
+use App\Http\Resources\review\ReviewCollection;
+use App\Http\Resources\review\ReviewResource;
 use Illuminate\Http\Request;
 
 class ReviewsController extends Controller
@@ -12,11 +15,9 @@ class ReviewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Food $food)
     {
-        $review = Reviews::all();
-
-        return response()->json([$review],200);
+        return new ReviewCollection($food->reviews);
     }
 
     /**
@@ -48,7 +49,6 @@ class ReviewsController extends Controller
 
         return response()->json([
             'message' => 'Review Created Successful',
-            'review' => $review
         ], 201);
     }
 
@@ -58,9 +58,9 @@ class ReviewsController extends Controller
      * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function show(Reviews $reviews)
+    public function show(Food $food, Reviews $review)
     {
-        return $reviews;
+        return new ReviewResource($review);
     }
 
     /**
@@ -81,16 +81,16 @@ class ReviewsController extends Controller
      * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reviews $reviews)
+    public function update(Request $request, Food $food, Reviews $review)
     {
         $request->validate([
             "star"=> "numeric|min:1|max:5",
             "review" => "nullable|min:3|max:50",
             "user_id" => "required|exists:users,id",
-            "food_id" => "required|exists:foods,id"
+            "food_id" => $food
         ]);
 
-        $order->update($request->all());
+        $review->update($request->all());
  
         return response()->json([
             'message' => 'review updated Successful',

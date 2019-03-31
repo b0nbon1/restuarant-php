@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+use App\Http\Resources\food\FoodCollection;
+use App\Http\Resources\food\FoodResource;
 use Illuminate\Http\Request;
 
 class FoodController extends Controller
@@ -14,9 +16,7 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $food = Food::all();
-
-        return response()->json([$food],200);
+        return new FoodCollection(Food::paginate(10));
     }
 
     /**
@@ -62,7 +62,7 @@ class FoodController extends Controller
      */
     public function show(Food $food)
     {
-        return $food;
+        return new FoodResource($food);
     }
 
     /**
