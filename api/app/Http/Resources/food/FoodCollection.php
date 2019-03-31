@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\food;
 
+use App\Http\Resources\FoodPhotoResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class FoodCollection extends ResourceCollection
@@ -20,10 +21,12 @@ class FoodCollection extends ResourceCollection
                  'name' => $data->name,
                  'price' => $data->price,
                  'discount'=> $data->discount,
+                 "photos" => FoodPhotoResource::collection($data->foodphotos),
                  'review'=> $data->getReview(),
                  'available'=> $data->available == false? 'Not available': 'available',
-                  'total_price',
-                 'link' => route('food.show',$data->id),
+                  'total_price'=>$data->sumTotal($data->discount, $data->price),
+                 'href' => ['food'=>route('food.show',$data->id),
+                            'reviews'=>route('food.show',$data->id)]
                 ]; }),
                 'meta' => ['food_count' => $this->collection->count()],
             ];
