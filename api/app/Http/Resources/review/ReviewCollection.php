@@ -17,9 +17,11 @@ class ReviewCollection extends ResourceCollection
         return ['data'=>$this->collection->transform(function ($data) 
              {return[ 
                  'id' => $data->id,
-                 'name' => $data->name,
-                 'description' => $data->description,
-                 'link' => route('category.show',$data->id),
+                 'comment' => $data->review,
+                 'star' => $data->star,
+                 'user' => $data->user->name,
+                 'created_at' => $data->created_at,
+                  'link' => route('review.show',$data->id),
                 ]; }),
                 'meta' => ['category_count' => $this->collection->count()],
             ];
