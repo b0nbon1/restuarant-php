@@ -3,6 +3,7 @@
 namespace App\Http\Resources\food;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\FoodPhotoResource;
 
 class FoodResource extends JsonResource
 {
@@ -17,13 +18,14 @@ class FoodResource extends JsonResource
         return[ 
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->name,
+            'description' => $this->description,
             'price' => $this->price,
+            'photos' => FoodPhotoResource::collection($this->foodphotos),
             'discount'=> $this->discount,
             'star'=> $this->getReview(),
             'available'=> $this->available == false? 'Not available': 'available',
             //  'total_price',
-            $this->getReviews($this->id)
+            // $this->getFoods($this->id)
         ];
     }
 }
