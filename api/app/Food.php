@@ -5,6 +5,7 @@ namespace App;
 use App\Order;
 use App\Reviews;
 use App\Category;
+use App\FoodPhoto;
 use App\Http\Resources\review\ReviewCollection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +20,10 @@ class Food extends Model
         'category_id'
     ];
 
+    public function foodphotos()
+    {
+        return $this->hasMany(FoodPhoto::class);
+    }
     public function orders()
     {
         return $this->belongsToMany(Order::class,'order_details');
@@ -40,7 +45,8 @@ class Food extends Model
     {
         return  new ReviewCollection($this::find($id)->reviews);
     }
-    public function sumTotal($discount, $price){
+    public function sumTotal($discount, $price)
+    {
         return ((1-($discount/100))*$price);
     }
 }
