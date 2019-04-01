@@ -18,6 +18,7 @@ class FoodController extends Controller
      */
     public function index()
     {
+        echo public_path();
         return new FoodCollection(Food::paginate(10));
     }
 
