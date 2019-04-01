@@ -2,8 +2,7 @@
 namespace App\Http\Controllers;
 
 
-use Avatar;
-use Storage;
+use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -27,21 +26,43 @@ class AuthController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'phone' => 'required|digits:11',
+            'avatar' => 'image|nullable|max:1999',
             'address' => 'required|min:6|max:50',
             'password' => 'required|string|confirmed'
         ]);
+        \DB::beginTransaction();
+        /*trying to scam the db*/ 
+        if( $request->hasFile('avatar')){
+            $png_url = '/avatar.png';
+            $path = public_path() . '/storage/'.$user->id. $png_url;
+            
+            $data = $request->img;
+            $data = base64_encode($data);
+            $data = base64_decode($data);
+            $avatar = Image::make($data)->fit(500, 500);
+            Storage::put($path, (string) $avatar);
+            
+        }else {
+            $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+            $png_url = public_path() . '/storage/'.$user->id.'/avatar.png';
+            Storage::put($png_url, (string) $avatar);
+        }
+        /* */
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'avatar' => $png_url,
             'address' => $request->address,
             'password' => bcrypt($request->password),
             'activation_token' => str_random(60)
         ]);
         $user->save();
+        if (!$user->save())
+                \DB::rollBack();
 
-        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-        Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+        // $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+        // Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
 
         $user->notify(new SignupActivate($user));
 

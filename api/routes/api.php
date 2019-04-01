@@ -25,6 +25,7 @@ Route::group([
         ], function() {
             Route::get('logout', 'AuthController@logout');
             Route::get('user', 'AuthController@user');
+            Route::patch('user','AuthController@user');
         });
 });
 
@@ -55,4 +56,9 @@ Route::group([
     Route::post('create', 'PasswordResetController@create');
     Route::get('find/{token}', 'PasswordResetController@find');
     Route::post('reset', 'PasswordResetController@reset');
+});
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact info@website.com'], 404);
 });

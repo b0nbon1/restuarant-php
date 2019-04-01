@@ -21,7 +21,6 @@ class ReviewCollection extends ResourceCollection
                  'star' => $data->star,
                  'user' => $data->user->name,
                  'created_at' => $data->created_at,
-                  'link' => route('review.show',$data->id),
                 ]; }),
                 'meta' => ['category_count' => $this->collection->count()],
             ];
