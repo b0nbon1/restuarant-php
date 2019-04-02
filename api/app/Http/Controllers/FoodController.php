@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+// use Illuminate\Support\Facades\DB;
 use App\Http\Resources\food\FoodCollection;
 use App\Http\Resources\food\FoodResource;
 use Illuminate\Http\Request;
@@ -123,7 +124,7 @@ class FoodController extends Controller
     public function update(Request $request, Food $food)
     {
         $request->validate([
-            'name' => 'nullable|min:3|max:50',
+            'name' => 'required|min:3|max:50',
             'description' => 'nullable|max:200',
             'price'=> 'nullable|numeric',
             'discount'=>'nullable|numeric',
@@ -135,27 +136,32 @@ class FoodController extends Controller
 
         
         \DB::beginTransaction();
-        $i = 0;
+        
+        
         $food->update($request->all());
         
         if ($request->img){foreach ($food->foodphotos as $photo) {
-            $photo->delete();
+            $i = 0;
+            $photo->delete();}
+            foreach ($request->img as $foodPhoto) {
+                $png_url = "/img/" . time() . "_" . $i . ".png";
+                $path = public_path() . "/storage" . $png_url;
+                
+                $data = $request->img[$i];
+                $data = base64_encode($data);
+                $data = base64_decode($data);
+                Image::make($data)->fit(500, 500)->save($path);
+                $img = \DB::table('food_photos')->where('food_id', $food)->first();
+                Image::make($data)->fit(500, 500)->save($path);
+                $img = new FoodPhoto();
+                $img->path = $png_url;
+                $img->food_id = $food->id;
+                if (!$img->save())
+                    \DB::rollBack();
+                $i++;
+            }
         }
-        foreach ($request->img as $foodPhoto) {
-            $png_url = "/img/" . time() . "_" . $i . ".png";
-            $path = public_path() . "/storage" . $png_url;
-            
-            $data = $request->img[$i];
-            $data = base64_encode($data);
-            $data = base64_decode($data);
-            Image::make($data)->fit(500, 500)->save($path);
-            $img = new FoodPhoto();
-            $img->path = $png_url;
-            $img->food_id = $food->id;
-            if (!$img->save())
-                \DB::rollBack();
-            $i++;
-        }}
+        
         \DB::commit();
 
         return new FoodResource($food);

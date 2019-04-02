@@ -20,7 +20,7 @@ class Food extends Model
         'category_id'
     ];
 
-    public function foodphotos()
+    public function foodPhotos()
     {
         return $this->hasMany(FoodPhoto::class);
     }

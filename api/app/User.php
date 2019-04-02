@@ -5,6 +5,7 @@ namespace App;
 use Storage;
 use App\Order;
 use App\Reviews;
+use App\ProfilePic;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -65,6 +66,10 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+    public function profilePics()
+    {
+        return $this->hasMany(ProfilePic::class);
     }
     
 }

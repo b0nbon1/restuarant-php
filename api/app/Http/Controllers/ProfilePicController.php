@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Avatar;
+use App\ProfilePic;
 use Illuminate\Http\Request;
 
-class AvatarController extends Controller
+class ProfilePicController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class AvatarController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Avatar  $avatar
+     * @param  \App\ProfilePic  $profilePic
      * @return \Illuminate\Http\Response
      */
-    public function show(Avatar $avatar)
+    public function show(ProfilePic $profilePic)
     {
         //
     }
@@ -52,10 +52,10 @@ class AvatarController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Avatar  $avatar
+     * @param  \App\ProfilePic  $profilePic
      * @return \Illuminate\Http\Response
      */
-    public function edit(Avatar $avatar)
+    public function edit(ProfilePic $profilePic)
     {
         //
     }
@@ -64,10 +64,10 @@ class AvatarController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Avatar  $avatar
+     * @param  \App\ProfilePic  $profilePic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Avatar $avatar)
+    public function update(Request $request, ProfilePic $profilePic)
     {
         //
     }
@@ -75,10 +75,10 @@ class AvatarController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Avatar  $avatar
+     * @param  \App\ProfilePic  $profilePic
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Avatar $avatar)
+    public function destroy(ProfilePic $profilePic)
     {
         //
     }

@@ -2,15 +2,16 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Avatar extends Model
+class ProfilePic extends Model
 {
-    protected $fillable = ['path', 'food_id'];
+    protected $fillable = ['path', 'user_id'];
 
-    public function food()
+    public function user()
     {
-        return $this->belongsTo(Food::class);
+        return $this->belongsTo(User::class);
     }
 
     public function getPath()
