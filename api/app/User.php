@@ -6,6 +6,7 @@ use Storage;
 use App\Order;
 use App\Reviews;
 use App\ProfilePic;
+use App\OrderDetails;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -61,6 +62,11 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function order_details()
+    {
+        return $this->hasMany(OrderDetails::class);
     }
 
     public function reviews()
