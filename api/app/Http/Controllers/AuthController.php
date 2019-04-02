@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-
+use Storage;
+use Avatar;
+use App\ProfilePic;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,43 +28,38 @@ class AuthController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'phone' => 'required|digits:11',
-            'avatar' => 'image|nullable|max:1999',
+            // 'avatar' => 'image|nullable|max:1999',
             'address' => 'required|min:6|max:50',
             'password' => 'required|string|confirmed'
         ]);
-        \DB::beginTransaction();
-        /*trying to scam the db*/ 
-        if( $request->hasFile('avatar')){
-            $png_url = '/avatar.png';
-            $path = public_path() . '/storage/'.$user->id. $png_url;
-            
-            $data = $request->img;
-            $data = base64_encode($data);
-            $data = base64_decode($data);
-            $avatar = Image::make($data)->fit(500, 500);
-            Storage::put($path, (string) $avatar);
-            
-        }else {
-            $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-            $png_url = public_path() . '/storage/'.$user->id.'/avatar.png';
-            Storage::put($png_url, (string) $avatar);
-        }
-        /* */
-        $user = new User([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'avatar' => $png_url,
-            'address' => $request->address,
-            'password' => bcrypt($request->password),
-            'activation_token' => str_random(60)
-        ]);
-        $user->save();
-        if (!$user->save())
-                \DB::rollBack();
 
-        // $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-        // Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+        \DB::beginTransaction();
+        $user = new User();
+        
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->password = bcrypt($request->password);
+        $user->activation_token = str_random(60);
+        $user->save();
+        
+
+        $png_url = "/user/" . time() . "_" .$user->id. ".png";
+        $path = "/public" . $png_url;
+        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+        Storage::put($path, (string) $avatar);
+
+        $pic = new ProfilePic();
+        $pic->user_id = $user->id;
+        $pic->path = $png_url;
+        
+        if (!$pic->save()){
+            \DB::rollBack();}
+
+        \DB::commit();
+        
+        
 
         $user->notify(new SignupActivate($user));
 
@@ -150,5 +147,39 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+    public function updateUser(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'nullable|string',
+            'email' => 'nullable|string|email|unique:users',
+            'phone' => 'nullable|digits:11',
+            'avatar' => 'image|nullable|max:1999',
+            'address' => 'nullable|min:6|max:50',
+        ]);
+        \DB::beginTransaction();
+        
+        $food->update($request->all());
+
+        if ($request->avatar) {
+            $user->profile_pics->delete();
+            
+                $png_url = "/user/" .time() . "_" .$user->id. ".png";
+                $path = public_path() . "/storage" . $png_url;
+                
+                $data = $request->avatar;
+                $data = base64_encode($data);
+                $data = base64_decode($data);
+                Image::make($data)->fit(500, 500)->save($path);
+                $img = \DB::table('Profile_pics')->where('user_id', $user)->first();
+                Image::make($data)->fit(500, 500)->save($path);
+                $img = new ProfilePic();
+                $img->path = $png_url;
+                $img->user_id = $user->id;
+                if (!$img->save())
+                    \DB::rollBack();
+        }
+        \DB::commit();
+
     }
 }
