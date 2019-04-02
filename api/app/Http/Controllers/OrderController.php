@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -40,10 +45,16 @@ class OrderController extends Controller
         $request->validate([
             'quantity' => 'required|numeric',
             'food_id'=>'required|exists:foods,id',
-            'user_id'=>'nullable|exists:users,id'
+            'description'=> 'nullable|max:255'
         ]);
 
-        $order = Order::create($request->all());
+        // $order = Order::create($request->all());
+        $order = new Order;
+        $order->quantity = $request->quantity;
+        $order->food_id = $request->food_id;
+        $order->description = $request->description;
+        $order->user_id = auth()->user()->id;
+        $order->save();
 
         return response()->json([
             'message' => 'Order Created Successful',
@@ -85,7 +96,6 @@ class OrderController extends Controller
         $request->validate([
             'quantity' => 'nullable|numeric',
             'food_id'=>'nullable|exists:foods,id',
-            'user_id'=>'nullable|exists:users,id'
         ]);
 
         $order->update($request->all());
