@@ -131,7 +131,7 @@ class FoodController extends Controller
             'available'=> 'nullable',
             'category_id'=>'nullable|exists:categories,id',
             'img' => 'nullable|array|min:1',
-            'img.*' => 'nullable|max:5000'
+            'img.*' => 'nullable|max:1999'
         ]);
 
         
@@ -150,8 +150,6 @@ class FoodController extends Controller
                 $data = $request->img[$i];
                 $data = base64_encode($data);
                 $data = base64_decode($data);
-                Image::make($data)->fit(500, 500)->save($path);
-                $img = \DB::table('food_photos')->where('food_id', $food)->first();
                 Image::make($data)->fit(500, 500)->save($path);
                 $img = new FoodPhoto();
                 $img->path = $png_url;
