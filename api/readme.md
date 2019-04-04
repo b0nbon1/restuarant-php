@@ -1,71 +1,81 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+[![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)     [![GitHub followers](https://img.shields.io/github/followers/b0nbon1.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/b0nbon1?tab=followers)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
+# dA Restaurant
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![welcome image](https://i.ytimg.com/vi/MHG3n_-Y33A/maxresdefault.jpg)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## About dA Restaurant 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+dA Restaurant  is a complete food ordering laravel for presenting a restaurant menu and accepting orders on the go. It comes with a powerful Self Hosted Administration Panel, where restaurant owners can create/update their menu and prices, their business information and manage their order. 
 
-## Learning Laravel
+``
+I did this project for learning purposes so please raise issues and pull request for more modifications, errors or to improve the api. ``
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Getting Started
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Documentation coming soon for deployment and production purposes
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost you and your team's skills by digging into our comprehensive video library.
+## Prerequisites
+* [php](http://php.net/)
+* [composer](https://getcomposer.org/)
 
-## Laravel Sponsors
+## Installing
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Install laravel framework
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
+```sh
+composer global require "laravel/installer"
+```
 
-## Contributing
+Naviage to `/api` folder
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Create a database then rename `.env.example` to `.env` add database variables
 
-## Security Vulnerabilities
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=root
+DB_USERNAME=db
+DB_PASSWORD=*******
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Install the required packages and run the local server
+
+```sh
+composer install
+```
+
+Generate database tables and relations
+
+```sh
+php artisan migrate
+```
+
+Create `img` folder inside `storage/app/public` and run
+
+```sh
+php artisan storage:link
+```
+
+Create client for passport auth
+```sh
+ php artisan passport:client --personal
+ ```
+
+Run the localhost
+
+```sh
+php artisan serve
+```
+
 
 ## License
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The dA Restaurant api is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Author By
+
+Built by [Bonvic Bundi](https://github.com/b0nbon1) 
+
+[![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://twitter.com/Bonvic7) [![GitHub followers](https://img.shields.io/github/followers/b0nbon1.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/b0nbon1?tab=followers)
