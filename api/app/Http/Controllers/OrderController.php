@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Food;
 use App\Order;
+use App\Http\Resources\order\orderResource;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -21,7 +23,7 @@ class OrderController extends Controller
     {
         $order = Order::all();
 
-        return response()->json([$order],200);
+        return OrderResource::collection($order);
     }
 
     /**
@@ -43,22 +45,54 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'quantity' => 'required|numeric',
-            'food_id'=>'required|exists:foods,id',
+            'quantity' => 'required|array',
+            'quantity.*' => 'required|numeric',
+            'food_id'=>'required|array',
+            'food.*' => 'required|exists:foods,id',
             'description'=> 'nullable|max:255'
         ]);
+            $quantity = $request->quantity;
+            $food_id = $request->food_id;
+        foreach($food_id as $food){
+            if(!Food::find($food))
+            return response()->json([
+                'error' => 'NO SUCH FOOD ITEM',
+                'data' => $food
+            ], 404);  
 
+        }
+        function total($quantity, $food_id){
+            $price = [];
+            for($i=0; $i<count($food_id); $i++) {
+                $item = Food::find($food_id[$i])->price;
+                array_push($price, $item);
+            }
+            $total=0;
+
+            for($i=0; $i<count($price); $i++){
+                $sub = $price[$i] * $quantity[$i];
+                $total+= $sub;
+            }
+            return $total;
+        }
+
+        $total = total($quantity, $food_id);
         // $order = Order::create($request->all());
+        $food_id = serialize($food_id);
+        $food_id = urlencode($food_id);
+        $quantity = serialize($quantity);
+        $quantity = urlencode($quantity);
         $order = new Order;
-        $order->quantity = $request->quantity;
-        $order->food_id = $request->food_id;
+        $order->quantity = $quantity;
+        $order->food_id = $food_id;
         $order->description = $request->description;
+        $order->total_price = $total;
         $order->user_id = auth()->user()->id;
         $order->save();
 
         return response()->json([
             'message' => 'Order Created Successful',
-            'order' => $order
+            'order' => new OrderResource($order)
         ], 201);
     }
 
