@@ -53,8 +53,8 @@ Route::post('category', 'CategoryController@store')->name('category.store');
 Route::post('food', 'FoodController@store')->name('food.store');
 Route::post('food/{food}', 'FoodController@update')->name('food.update');
 Route::delete('food/{food}', 'FoodController@destroy')->name('food.destroy');
-Route::patch('category', 'CategoryController@update')->name('category.update');
-Route::delete('category', 'CategoryController@destroy')->name('category.destroy');
+Route::patch('category/{category}', 'CategoryController@update')->name('category.update');
+Route::delete('category/{category}', 'CategoryController@destroy')->name('category.destroy');
 Route::get('order', 'OrderController@index')->name('order.index');
 });
 /*end admin routes*/
@@ -64,18 +64,20 @@ Route::group([
     'middleware' => ['api', 'cors', 'auth:api'],
 ], function () {
     Route::resource('order', 'OrderController')->except(["create","index", "edit"]);
-    Route::resource('food/{food}/review', 'ReviewsController')->except(["create","index", "edit"]);
+    Route::resource('food/{food}/review', 'ReviewsController')->except(["create","index", "edit", "show"]);
      
 });
 /*end authenticated routes*/
 
 /*start all users routes*/
-Route::group(['prefix'=> 'food',
+Route::group([
         'middleware' => 'cors'
 ],
 function (){
 Route::get('category', 'CategoryController@index')->name('category.index');
+Route::get('category/{category}', 'CategoryController@show')->name('category.show');
 Route::get('food', 'FoodController@index')->name('food.index');
+Route::get('food/{food}', 'FoodController@show')->name('food.show');
 Route::get('food/{food}/review', 'ReviewsController@index')->name('review.index');
 });
 /*end all users routes*/
