@@ -7,7 +7,7 @@
 
 ## About dA Restaurant 
 
-dA Restaurant  is a complete food ordering laravel for presenting a restaurant menu and accepting orders on the go. It comes with a powerful Self Hosted Administration Panel, where restaurant owners can create/update their menu and prices, their business information and manage their order. 
+dA Restaurant  is a complete food ordering laravel api for presenting a restaurant menu and accepting orders on the go. It comes with a powerful Self Hosted Administration Panel, where restaurant owners can create/update their menu and prices, their business information and manage their order. 
 
 ``
 I did this project for learning purposes so please raise issues and pull request for more modifications, errors or to improve the api. ``
@@ -21,13 +21,20 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Installing
 
-Install laravel framework
+### Install laravel framework
 
 ```sh
 composer global require "laravel/installer"
 ```
 
-Naviage to `/api` folder
+### clone or Download
+
+```sh
+clone/download "adrest" from here and forget to star(its NOOB thing)
+``` 
+
+
+### Naviage to `/api` folder
 
 Create a database then rename `.env.example` to `.env` add database variables
 
@@ -52,7 +59,7 @@ Generate database tables and relations
 php artisan migrate
 ```
 
-Create `img` folder inside `storage/app/public` and run
+Create `img` and `user` folder inside `storage/app/public` and run
 
 ```sh
 php artisan storage:link
