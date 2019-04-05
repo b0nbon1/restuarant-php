@@ -52,11 +52,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['avatar_url'];
-    public function getAvatarUrlAttribute()
-    {
-        return Storage::url('avatars/'.$this->id.'/'.$this->avatar);
-    }
 
 
     public function orders()
@@ -75,7 +70,7 @@ class User extends Authenticatable
     }
     public function profilePics()
     {
-        return $this->hasMany(ProfilePic::class);
+        return $this->hasOne(ProfilePic::class);
     }
     
 }
