@@ -14,6 +14,7 @@ class CreateProfilePicsTable extends Migration
     public function up()
     {
         Schema::create('profile_pics', function (Blueprint $table) {
+            $table->increments('id');
             $table->string("path");
             $table->timestamps();
 
