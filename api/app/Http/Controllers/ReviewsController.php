@@ -36,19 +36,23 @@ class ReviewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Food $food)
     {
         $request->validate([
             "star"=> "numeric|min:1|max:5",
             "review" => "nullable|min:3|max:50",
-            "user_id" => "required|exists:users,id",
-            "food_id" => "required|exists:foods,id"
+            
         ]);
-
-        $review = Reviews::create($request->all());
+        $reviews = new Reviews;
+        $reviews->star = $request->star;
+        $reviews->review = $request->review;
+        $reviews->food_id = $food->id;
+        $reviews->user_id = auth()->user()->id;
+        $reviews->save();
 
         return response()->json([
             'message' => 'Review Created Successful',
+            'data' => new ReviewResource($reviews)
         ], 201);
     }
 
@@ -81,20 +85,18 @@ class ReviewsController extends Controller
      * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Food $food, Reviews $review)
+    public function update(Request $request, Reviews $review)
     {
         $request->validate([
             "star"=> "numeric|min:1|max:5",
             "review" => "nullable|min:3|max:50",
-            "user_id" => "required|exists:users,id",
-            "food_id" => $food
         ]);
 
         $review->update($request->all());
  
         return response()->json([
             'message' => 'review updated Successful',
-            'review' => $review
+            'review' => new ReviewResource($reviews)
         ], 201);
     }
 
@@ -106,7 +108,7 @@ class ReviewsController extends Controller
      */
     public function destroy(Reviews $reviews)
     {
-        $order->delete();
+        $reviews->delete();
 
         return response()->json([
             'message' => 'Successfully deleted review!'
