@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Storage;
 use Avatar;
 use App\ProfilePic;
+use App\Http\Resources\user\UserResource;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,7 +82,7 @@ class AuthController extends Controller
         $user->active = true;
         $user->activation_token = '';
         $user->save();
-        return $user;
+        return new UserResource($user);
     }
   
     /**
@@ -146,13 +147,14 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        return response()->json(new UserResource($user));
     }
     public function updateUser(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|string|email',
             'phone' => 'required|digits:11',
             'avatar' => 'image|nullable|max:1999',
             'address' => 'required|min:6|max:50',
@@ -187,7 +189,7 @@ class AuthController extends Controller
         }
         \DB::commit();
 
-        return $user;
+        return new UserResource($user);
 
     }
 }
