@@ -140,7 +140,7 @@ class FoodController extends Controller
         
         $food->update($request->all());
         
-        if ($request->img){foreach ($food->foodphotos as $photo) {
+        if ($request->img){foreach ($food->foodPhotos as $photo) {
             $i = 0;
             $photo->delete();}
             foreach ($request->img as $foodPhoto) {
@@ -161,23 +161,11 @@ class FoodController extends Controller
         }
         
         \DB::commit();
-
-        return new FoodResource($food);
-        // $request->validate([
-        //     'name' => 'nullable|min:3|max:50',
-        //     'description' => 'nullable|max:200',
-        //     'price'=> 'nullable|numeric',
-        //     'discount'=>'nullable|numeric',
-        //     'available'=> 'nullable',
-        //     'category_id'=>'nullable|exists:food_categories,id'
-        // ]);
-
-        // $food->update($request->all());
  
-        //  return response()->json([
-        //      'message' => 'food updated',
-        //      'task' => $food
-        //  ],201);
+         return response()->json([
+             'message' => 'food updated',
+             'task' => new FoodResource($food)
+         ],201);
     }
 
     /**
