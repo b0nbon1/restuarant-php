@@ -148,21 +148,28 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
-    public function updateUser(Request $request, User $user)
+    public function updateUser(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'email' => 'nullable|string|email|unique:users',
-            'phone' => 'nullable|digits:11',
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'phone' => 'required|digits:11',
             'avatar' => 'image|nullable|max:1999',
-            'address' => 'nullable|min:6|max:50',
+            'address' => 'required|min:6|max:50',
         ]);
         \DB::beginTransaction();
         
-        $food->update($request->all());
+        $user = auth()->user();
+        $user->update([$request->name,
+                        $request->email,
+                        $request->phone,
+                        $request->phone,
+                        $request->address
+                    ]);
 
         if ($request->avatar) {
-            $user->profile_pics->delete();
+            if($user->profilePics)
+                $user->profilePics->delet();
             
                 $png_url = "/user/" .time() . "_" .$user->id. ".png";
                 $path = public_path() . "/storage" . $png_url;
@@ -172,7 +179,6 @@ class AuthController extends Controller
                 $data = base64_decode($data);
                 Image::make($data)->fit(500, 500)->save($path);
                 $img = \DB::table('Profile_pics')->where('user_id', $user)->first();
-                Image::make($data)->fit(500, 500)->save($path);
                 $img = new ProfilePic();
                 $img->path = $png_url;
                 $img->user_id = $user->id;
@@ -180,6 +186,8 @@ class AuthController extends Controller
                     \DB::rollBack();
         }
         \DB::commit();
+
+        return $user;
 
     }
 }
