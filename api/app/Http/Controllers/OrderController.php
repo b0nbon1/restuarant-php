@@ -102,9 +102,10 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show()
     {
-        return response()->json([$order],200);
+        $order = Order::whereIn('user_id', [auth()->user()->id])->get();
+        return response()->json([OrderResource::collection($order)],200);
     }
 
     /**

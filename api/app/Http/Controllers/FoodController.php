@@ -55,9 +55,9 @@ class FoodController extends Controller
             'price'=> 'required|numeric',
             'discount'=>'nullable|numeric',
             'available'=> 'nullable',
-            'category_id'=>'nullable|exists:categories,id',
+            'category_id'=>'nullable|numeric|exists:categories,id',
             'img' => 'required|array|min:1',
-            'img.*' => 'required|max:5000'
+            'img.*' => 'required|max:1999'
         ]);
 
         \DB::beginTransaction();
