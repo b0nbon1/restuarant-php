@@ -22,7 +22,7 @@ class ReviewCollection extends ResourceCollection
                  'user' => $data->user->name,
                  'created_at' => $data->created_at,
                 ]; }),
-                'meta' => ['category_count' => $this->collection->count()],
+                'meta' => ['review_count' => $this->collection->count()],
             ];
     }
 }

@@ -85,8 +85,9 @@ class ReviewsController extends Controller
      * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reviews $review)
+    public function update(Food $food, Request $request, Reviews $review)
     {
+        if($review->user_id === auth()->user()->id){
         $request->validate([
             "star"=> "numeric|min:1|max:5",
             "review" => "nullable|min:3|max:50",
@@ -96,8 +97,13 @@ class ReviewsController extends Controller
  
         return response()->json([
             'message' => 'review updated Successful',
-            'review' => new ReviewResource($reviews)
-        ], 201);
+            'review' => new ReviewResource($review)
+        ], 201);}
+        else {
+            return response()->json([
+                'message' => 'Not auntheticated to perform this action'
+            ], 201);
+        }
     }
 
     /**
@@ -106,12 +112,19 @@ class ReviewsController extends Controller
      * @param  \App\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reviews $reviews)
+    public function destroy(Food $food, Reviews $review)
     {
-        $reviews->delete();
+         if($review->user_id == auth()->user()->id){
+            $review->delete();
 
         return response()->json([
             'message' => 'Successfully deleted review!'
         ],200);
+     }
+        else {
+            return response()->json([
+                'message' => 'Not auntheticated to perform this action'
+            ], 201);
+        }
     }
 }
