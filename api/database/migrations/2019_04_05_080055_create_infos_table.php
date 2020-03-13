@@ -15,7 +15,7 @@ class CreateInfosTable extends Migration
     {
         Schema::create('infos', function (Blueprint $table) {
             $table->increments('id');
-            $table->location('');
+            $table->string('location');
             $table->timestamps();
         });
     }
